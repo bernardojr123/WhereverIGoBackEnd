@@ -1,6 +1,7 @@
 package dominio;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import connection.InicializarBanco;
 import dao.UsuarioDao;
 
 @Path("/UserService")
@@ -25,7 +27,8 @@ public class UserService {
    UsuarioDao userDao = new UsuarioDao();
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String FAILURE_RESULT="<result>failure</result>";
-
+   private static InicializarBanco InicializarBanco;
+   
 
 /*   @GET
    @Path("/users")
@@ -38,7 +41,13 @@ public class UserService {
    @Path("/users/{useremail}")
    @Produces(MediaType.APPLICATION_JSON)
    public Usuario getUser(@PathParam("useremail") String userEmail){
-      return userDao.getUsuario(userEmail);
+	   try {
+		InicializarBanco = new InicializarBanco();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	   return userDao.getUsuario(userEmail);
    }
 
    @POST

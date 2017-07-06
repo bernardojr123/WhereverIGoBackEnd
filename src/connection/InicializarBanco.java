@@ -39,20 +39,18 @@ public class InicializarBanco {
 		    stmt.executeUpdate(sql3);
 		    
 		    String sql4 = "CREATE TABLE  usuario  ("
-		    		+ "id int autoincrement,"
+		    		+ "id integer primary key AUTO_INCREMENT,"
 		    		+ "email varchar(50) NOT NULL,"
-		    		+ "senha varchar(50) NOT NULL,"		    		
-		    		+ " PRIMARY KEY (cpf)"
-		    		+ ")";
+		    		+ "senha varchar(50) NOT NULL)";
 		    stmt.executeUpdate(sql4);
 		    
-		    String sql5 = "CREATE TABLE pessoa ("
+/*		    String sql5 = "CREATE TABLE pessoa ("
 		    		+ "codMat varchar(11) NOT NULL,"
 		    		+ "descricao varchar(100) NOT NULL,"
 		    		+ " PRIMARY KEY (codMat)"
 		    		+ ")";
 		    stmt.executeUpdate(sql5);
-		    
+		    */
 		    
 		    
 		    
