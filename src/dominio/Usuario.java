@@ -4,20 +4,20 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-@XmlRootElement(name = "user")
-public class User implements Serializable {
+@XmlRootElement(name = "usuario")
+public class Usuario implements Serializable {
 
    private static final long serialVersionUID = 1L;
    private int id;
    private String email;
    private String senha;
 
-   public User(){}
+   public Usuario(){}
 
-   public User(int id, String name, String profession){
+   public Usuario(int id, String email, String senha){
       this.id = id;
-      this.email = name;
-      this.senha = profession;
+      this.email = email;
+      this.senha = senha;
    }
 
    public int getId() {
@@ -28,32 +28,32 @@ public class User implements Serializable {
    public void setId(int id) {
       this.id = id;
    }
-   public String getName() {
+   public String getEmail() {
       return email;
    }
    @XmlElement
-      public void setName(String name) {
-      this.email = name;
+      public void setEmail(String email) {
+      this.email = email;
    }
-   public String getProfession() {
+   public String getSenha() {
       return senha;
    }
    @XmlElement
-   public void setProfession(String profession) {
-      this.senha = profession;
+   public void setSenha(String senha) {
+      this.senha = senha;
    }	
 
    @Override
    public boolean equals(Object object){
       if(object == null){
          return false;
-      }else if(!(object instanceof User)){
+      }else if(!(object instanceof Usuario)){
          return false;
       }else {
-         User user = (User)object;
+         Usuario user = (Usuario)object;
          if(id == user.getId()
-            && email.equals(user.getName())
-            && senha.equals(user.getProfession())
+            && email.equals(user.getEmail())
+            && senha.equals(user.getSenha())
          ){
             return true;
          }			

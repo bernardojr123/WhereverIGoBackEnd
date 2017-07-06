@@ -17,45 +17,47 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dao.UsuarioDao;
+
 @Path("/UserService")
 public class UserService {
 	
-   UserDao userDao = new UserDao();
+   UsuarioDao userDao = new UsuarioDao();
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String FAILURE_RESULT="<result>failure</result>";
 
 
-   @GET
+/*   @GET
    @Path("/users")
    @Produces(MediaType.APPLICATION_JSON)
-   public List<User> getUsers(){
+   public List<Usuario> getUsers(){
       return userDao.getAllUsers();
-   }
+   }*/
 
-   /*@GET
+   @GET
    @Path("/users/{useremail}")
    @Produces(MediaType.APPLICATION_JSON)
-   public User getUser(@PathParam("useremail") String userEmail){
-      return userDao.getUser(userEmail);
-   }*/
+   public Usuario getUser(@PathParam("useremail") String userEmail){
+      return userDao.getUsuario(userEmail);
+   }
 
    @POST
    @Path("/users")
-   @Produces(MediaType.APPLICATION_XML)
+   @Produces(MediaType.APPLICATION_JSON)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public String createUser(@FormParam("id") int id,
-      @FormParam("name") String name,
-      @FormParam("profession") String profession,
+   public String criarUsuario(@FormParam("id") int id,
+      @FormParam("email") String email,
+      @FormParam("senha") String senha,
       @Context HttpServletResponse servletResponse) throws IOException{
-      User user = new User(id, name, profession);
-      int result = userDao.addUser(user);
+      Usuario usuario = new Usuario(id, email, senha);
+      int result = userDao.addUsuario(usuario);
       if(result == 1){
          return SUCCESS_RESULT;
       }
       return FAILURE_RESULT;
    }
 
-   @PUT
+/*   @PUT
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -63,7 +65,7 @@ public class UserService {
       @FormParam("name") String name,
       @FormParam("profession") String profession,
       @Context HttpServletResponse servletResponse) throws IOException{
-      User user = new User(id, name, profession);
+      Usuario user = new Usuario(id, name, profession);
       int result = userDao.updateUser(user);
       if(result == 1){
          return SUCCESS_RESULT;
@@ -87,5 +89,5 @@ public class UserService {
    @Produces(MediaType.APPLICATION_XML)
    public String getSupportedOperations(){
       return "<operations>GET, PUT, POST, DELETE</operations>";
-   }
+   }*/
 }
