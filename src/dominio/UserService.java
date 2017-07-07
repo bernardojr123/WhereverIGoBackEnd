@@ -27,7 +27,6 @@ public class UserService {
    UsuarioDao userDao = new UsuarioDao();
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String FAILURE_RESULT="<result>failure</result>";
-   private static InicializarBanco InicializarBanco;
    
 
 /*   @GET
@@ -39,15 +38,11 @@ public class UserService {
 
    @GET
    @Path("/users/{useremail}")
-   @Produces(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_XML)
    public Usuario getUser(@PathParam("useremail") String userEmail){
-	   try {
-		InicializarBanco = new InicializarBanco();
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	   return userDao.getUsuario(userEmail);
+	   Usuario usuario = new Usuario(1,"1","1");
+	   //return userDao.getUsuario(userEmail);
+	   return usuario;
    }
 
    @POST

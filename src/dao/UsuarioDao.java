@@ -8,25 +8,21 @@ import connection.*;
 import dominio.Usuario;
 
 public class UsuarioDao {
-
-
-	private static InicializarBanco inicializarBanco;
-	
 	
 	public Usuario getUsuario(String email){
 		try {
-			inicializarBanco = new InicializarBanco();
-		} catch (SQLException e) {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	   
 		Connection connection = ConnectionFactory.getConnection();
 		java.sql.PreparedStatement stmt = null;
 		ResultSet resultSet = null;
-		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ";
+		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ?";
 		try{	
-			stmt = connection.prepareStatement(consulta+email);
+			stmt = connection.prepareStatement(consulta);
+			stmt.setString(1, email);
 			resultSet = stmt.executeQuery();
 			
 			
