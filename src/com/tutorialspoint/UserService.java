@@ -1,6 +1,8 @@
 package com.tutorialspoint;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,20 +19,37 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import connection.InicializarBanco;
+
+import dao.UsuarioDao;
+import dominio.Usuario;
+
+
 @Path("/UserService")
 public class UserService {
 	
-   UserDao userDao = new UserDao();
    UsuarioDao usuarioDao = new UsuarioDao();
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String FAILURE_RESULT="<result>failure</result>";
+   
+   private void inicializaBanco() {
+	   try {
+		InicializarBanco ini = new InicializarBanco();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+   }
 
 
    @GET
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
-   public List<User> getUsers(){
-      return userDao.getAllUsers();
+   public List<Usuario> getUsers(){
+	   ArrayList<Usuario> usus = new ArrayList<>();
+	   Usuario usu = new Usuario(1,"bernardo","aaa");
+	   usus.add(usu);
+	   return usus;
    }
 
    @GET
@@ -38,10 +57,11 @@ public class UserService {
    @Produces(MediaType.APPLICATION_XML)
    public Usuario getUser(@PathParam("usuarioemail") String email){
 	  Usuario usuario = usuarioDao.getUsuario(email);
+	  //Usuario usu = new Usuario(1,email,"ddd");
       return usuario;
    }
 
-   @POST
+   /*@POST
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -89,5 +109,5 @@ public class UserService {
    @Produces(MediaType.APPLICATION_XML)
    public String getSupportedOperations(){
       return "<operations>GET, PUT, POST, DELETE</operations>";
-   }
+   }*/
 }

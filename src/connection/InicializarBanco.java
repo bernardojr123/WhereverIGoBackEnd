@@ -15,6 +15,18 @@ public class InicializarBanco {
 		inicializarBanco();
 	}
 	
+	/*public static void main(String[] args) {
+		try {
+			InicializarBanco inicializar = new InicializarBanco();
+			UsuarioDao dao = new UsuarioDao();
+			Usuario usu = dao.getUsuario("bernardodems");
+			usu.getClass();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
+	
 	public void inicializarBanco() throws SQLException{
 		Connection conn = null;
 		Statement stmt = null;
@@ -29,16 +41,16 @@ public class InicializarBanco {
 		    stmt = conn.createStatement();
 		    
 		    //Criacao do banco
-		    String sql1 = "DROP SCHEMA IF exists whereverigo";
-		    stmt.executeUpdate(sql1);
+		    //String sql1 = "DROP SCHEMA IF exists whereverigo";
+		    //stmt.executeUpdate(sql1);
 		    
-		    String sql2 = "CREATE DATABASE whereverigo";
+		    String sql2 = "Create Database if not exists whereverigo";
 		    stmt.executeUpdate(sql2);
 		    
 		    String sql3 = "USE  whereverigo";
 		    stmt.executeUpdate(sql3);
 		    
-		    String sql4 = "CREATE TABLE  usuario  ("
+		    String sql4 = "CREATE TABLE  if not exists whereverigo.usuario  ("
 		    		+ "id integer primary key AUTO_INCREMENT,"
 		    		+ "email varchar(50) NOT NULL,"
 		    		+ "senha varchar(50) NOT NULL)";
