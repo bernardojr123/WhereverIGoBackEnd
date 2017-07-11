@@ -61,7 +61,7 @@ public class UserService {
       return usuario;
    }
 
-   /*@POST
+   @POST
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -69,14 +69,14 @@ public class UserService {
       @FormParam("name") String name,
       @FormParam("profession") String profession,
       @Context HttpServletResponse servletResponse) throws IOException{
-      User user = new User(id, name, profession);
-      int result = userDao.addUser(user);
+      Usuario user = new Usuario(id, name, profession);
+      int result = usuarioDao.addUsuario(user);
       if(result == 1){
          return SUCCESS_RESULT;
       }
       return FAILURE_RESULT;
    }
-
+   /*
    @PUT
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
