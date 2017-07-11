@@ -1,13 +1,12 @@
-package dao;
+package com.tutorialspoint;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import connection.*;
-import dominio.Usuario;
-
 public class UsuarioDao {
+	
+	
 	
 	public Usuario getUsuario(String email){
 		try {
@@ -50,7 +49,7 @@ public class UsuarioDao {
 	   java.sql.PreparedStatement stmt = null;
 		
 	   try{
-		   stmt = connection.prepareStatement("INSERT INTO whereverigo.usuario (email, senha)VALUES(?,?)");
+		   stmt = connection.prepareStatement("INSERT INTO usuario (email, senha)VALUES(?,?)");
 		   stmt.setString(1, usuario.getEmail());
 		   stmt.setString(2, usuario.getSenha());
 			
