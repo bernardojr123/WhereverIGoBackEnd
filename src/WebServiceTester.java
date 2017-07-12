@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -35,9 +37,14 @@ public class WebServiceTester  {
    //Test: Check if result is success XML.
    private void testAddUser(){
       Form form = new Form();
-      form.param("id", "5");
-      form.param("name", "naresh");
-      form.param("profession", "clerk");
+      form.param("email", "5");
+      form.param("senha", "naresh");
+      form.param("nome", "clerk");
+      java.util.Date date = new java.util.Date();
+	  Date data = new java.sql.Date(date.getTime());
+	  SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
+      form.param("dataNascimento", df.format(data));
+      form.param("sexo", "Masculino");
 
       String callResult = client
          .target(REST_SERVICE_URL)

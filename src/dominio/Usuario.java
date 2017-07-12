@@ -32,7 +32,7 @@ public class Usuario implements Serializable {
       return email;
    }
    @XmlElement
-      public void setEmail(String email) {
+   public void setEmail(String email) {
       this.email = email;
    }
    public String getSenha() {

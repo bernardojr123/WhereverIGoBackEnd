@@ -2,7 +2,10 @@ package com.tutorialspoint;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import connection.InicializarBanco;
 
 import dao.UsuarioDao;
+import dominio.Pessoa;
 import dominio.Usuario;
 
 
@@ -31,6 +35,7 @@ public class UserService {
    UsuarioDao usuarioDao = new UsuarioDao();
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String FAILURE_RESULT="<result>failure</result>";
+   private SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
    
    private void inicializaBanco() {
 	   try {
@@ -65,16 +70,31 @@ public class UserService {
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public String createUser(@FormParam("id") int id,
-      @FormParam("name") String name,
-      @FormParam("profession") String profession,
-      @Context HttpServletResponse servletResponse) throws IOException{
-      Usuario user = new Usuario(id, name, profession);
-      int result = usuarioDao.addUsuario(user);
-      if(result == 1){
-         return SUCCESS_RESULT;
-      }
-      return FAILURE_RESULT;
+   public String createUser(
+		   @FormParam("email") String email,
+		   @FormParam("senha") String senha,
+		   @FormParam("nome") String nome,
+		   @FormParam("dataNascimento") String dataNascimento,
+		   @FormParam("sexo") String sexo,
+		   @Context HttpServletResponse servletResponse) throws IOException{
+	   Usuario usu = new Usuario();
+	   usu.setEmail(email);
+	   usu.setSenha(senha);
+	   Pessoa pessoa = new Pessoa();
+	   pessoa.setUsuario(usu);
+	   pessoa.setNome(nome);
+	   pessoa.setSexo(sexo);
+	   try {
+		   pessoa.setDataNascimento(df.parse(dataNascimento));
+	   } catch (ParseException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+	   }
+	   int result = usuarioDao.addUsuario(pessoa);
+	   if(result == 1){
+		   return SUCCESS_RESULT;
+	   }
+	   return FAILURE_RESULT;
    }
    /*
    @PUT

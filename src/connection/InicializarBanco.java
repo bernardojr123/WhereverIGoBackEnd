@@ -1,6 +1,11 @@
 package connection;
 
 import java.sql.*;
+import java.util.Date;
+
+import dao.UsuarioDao;
+import dominio.Pessoa;
+import dominio.Usuario;
 
 public class InicializarBanco {
 	
@@ -11,21 +16,32 @@ public class InicializarBanco {
 	static final String USER = "root";
 	static final String PASS = "1234";
 	
-	public InicializarBanco() throws SQLException{
-		inicializarBanco();
-	}
-	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		try {
 			InicializarBanco inicializar = new InicializarBanco();
 			UsuarioDao dao = new UsuarioDao();
-			Usuario usu = dao.getUsuario("bernardodems");
-			usu.getClass();
+			Usuario usu = new Usuario();
+			usu.setEmail("bernardo");
+			usu.setSenha("aaaa");
+			Pessoa pessoa = new Pessoa();
+			pessoa.setUsuario(usu);
+			pessoa.setNome("Bernardo");
+			pessoa.setSexo("Masculino");
+			java.util.Date date = new java.util.Date();
+			Date data = new java.sql.Date(date.getTime());
+			pessoa.setDataNascimento(data);
+			dao.addUsuario(pessoa);
+			pessoa.getClass();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
+	
+	public InicializarBanco() throws SQLException{
+		inicializarBanco();
+	}
+	
 	
 	public void inicializarBanco() throws SQLException{
 		Connection conn = null;
@@ -56,13 +72,16 @@ public class InicializarBanco {
 		    		+ "senha varchar(50) NOT NULL)";
 		    stmt.executeUpdate(sql4);
 		    
-/*		    String sql5 = "CREATE TABLE pessoa ("
-		    		+ "codMat varchar(11) NOT NULL,"
-		    		+ "descricao varchar(100) NOT NULL,"
-		    		+ " PRIMARY KEY (codMat)"
-		    		+ ")";
+		    
+		    String sql5 = "CREATE TABLE if not exists whereverigo.pessoa (" 
+		    		+ "id integer NOT NULL AUTO_INCREMENT," 
+		    		+ "id_usuario integer not null," 
+		    		+ "nome varchar(50)not null,"  
+		    		+ "dataNascimento date not null,"
+		    		+ "sexo ENUM('Feminino', 'Masculino') not null,"
+		    		+ "primary key (id,id_usuario),"
+		    		+ "FOREIGN KEY (id_usuario) REFERENCES Usuario(id))";
 		    stmt.executeUpdate(sql5);
-		    */
 		    
 		    
 		    
