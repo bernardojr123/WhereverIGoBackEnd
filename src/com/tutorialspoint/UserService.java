@@ -100,7 +100,7 @@ public class UserService {
 		   @Context HttpServletResponse servletResponse) throws IOException{
 	   boolean b = usuarioDao.existeUsuario(email);
 	   if(b == true){
-		   Pessoa pessoa = usuarioDao.getUsuario(email);
+		   Pessoa pessoa = usuarioDao.getPessoa(email);
 		   return pessoa;
 	   }
 	   return null;

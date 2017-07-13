@@ -16,13 +16,13 @@ public class InicializarBanco {
 	static final String USER = "root";
 	static final String PASS = "1234";
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			InicializarBanco inicializar = new InicializarBanco();
 			UsuarioDao dao = new UsuarioDao();
 			Usuario usu = new Usuario();
-			usu.setEmail("bernardo");
-			usu.setSenha("aaaa");
+			usu.setEmail("bernardo5");
+			usu.setSenha("aaaab");
 			Pessoa pessoa = new Pessoa();
 			pessoa.setUsuario(usu);
 			pessoa.setNome("Bernardo");
@@ -36,7 +36,7 @@ public class InicializarBanco {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public InicializarBanco() throws SQLException{
 		inicializarBanco();
@@ -68,7 +68,7 @@ public class InicializarBanco {
 		    
 		    String sql4 = "CREATE TABLE  if not exists whereverigo.usuario  ("
 		    		+ "id integer primary key AUTO_INCREMENT,"
-		    		+ "email varchar(50) NOT NULL,"
+		    		+ "email varchar(50) unique NOT NULL,"
 		    		+ "senha varchar(50) NOT NULL)";
 		    stmt.executeUpdate(sql4);
 		    

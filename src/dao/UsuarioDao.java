@@ -4,12 +4,19 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import connection.*;
 import dominio.Pessoa;
 import dominio.Usuario;
 
 public class UsuarioDao {
+		
+	/*public static void main(String[] args) {
+		UsuarioDao usu = new UsuarioDao();
+		boolean pessoa = usu.verificarUsuario("bernardodems","1234568");
+
+	}*/
 	
 	public UsuarioDao() {
 		try {
@@ -20,7 +27,7 @@ public class UsuarioDao {
 		}
 	}
 	
-	public Pessoa getUsuario(String email){
+	public Pessoa getPessoa(String email){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -44,13 +51,17 @@ public class UsuarioDao {
 				usuario.setSenha(resultSet.getString("senha"));
 				
 				Pessoa pessoa = new Pessoa();
-				String consulta2 = "SELECT * FROM whereverigo.pessoa WHERE pesosa.id_usuario = ?";
+				String consulta2 = "SELECT * FROM whereverigo.pessoa WHERE pessoa.id_usuario = ?";
 				stmt = connection.prepareStatement(consulta2);
 				stmt.setInt(1, usuario.getId());
-				resultSet = stmt.executeQuery();
+				ResultSet resultSet2 = stmt.executeQuery();
 				
-				while (resultSet.next()){
-					//pessoa.setNome(resultSet);
+				while (resultSet2.next()){
+					pessoa.setId(resultSet2.getInt("id"));
+					pessoa.setNome(resultSet2.getString("nome"));
+					pessoa.setSexo(resultSet2.getString("sexo"));
+					pessoa.setUsuario(usuario);
+					pessoa.setDataNascimento(resultSet2.getDate("dataNascimento"));
 					
 					return pessoa;
 				
@@ -64,6 +75,39 @@ public class UsuarioDao {
 			ConnectionFactory.closeConnection(connection, stmt, resultSet);
 		}
 		return null;
+	}
+	
+	public Usuario getUsuario(String email){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection connection = ConnectionFactory.getConnection();
+		java.sql.PreparedStatement stmt = null;
+		ResultSet resultSet = null;
+		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ?";
+		try{	
+			stmt = connection.prepareStatement(consulta);
+			stmt.setString(1, email);
+			resultSet = stmt.executeQuery();
+			
+			Usuario usuario = new Usuario();
+			while (resultSet.next()){
+				usuario.setId(resultSet.getInt("id"));
+				usuario.setEmail(resultSet.getString("email"));
+				usuario.setSenha(resultSet.getString("senha"));
+				
+			}
+			return usuario;
+			
+		}catch (SQLException ex){
+			return null;
+		}
+		finally{
+			ConnectionFactory.closeConnection(connection, stmt, resultSet);
+		}
 	}
 	
 	public boolean existeUsuario(String email){
@@ -140,7 +184,8 @@ public class UsuarioDao {
 		   stmt.executeUpdate();
 		   
 		   stmt = connection.prepareStatement("INSERT INTO whereverigo.pessoa (id_usuario, nome, dataNascimento, sexo) VALUES (?,?,?,?);");
-		   int id = getUsuario(usuario.getEmail()).getId();
+		   Usuario p = getUsuario(usuario.getEmail());
+		   int id = p.getId();
 		   stmt.setInt(1, id);
 		   stmt.setString(2, pessoa.getNome());
 		   java.sql.Date dataSql = new java.sql.Date(pessoa.getDataNascimento().getTime());
