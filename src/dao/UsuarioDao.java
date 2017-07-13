@@ -20,7 +20,7 @@ public class UsuarioDao {
 		}
 	}
 	
-	public Usuario getUsuario(String email){
+	public Pessoa getUsuario(String email){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -38,13 +38,23 @@ public class UsuarioDao {
 			
 			
 			while (resultSet.next()){
-		
 				Usuario usuario = new Usuario();
 				usuario.setId(resultSet.getInt("id"));
 				usuario.setEmail(resultSet.getString("email"));
 				usuario.setSenha(resultSet.getString("senha"));
-			   
-				return usuario;
+				
+				Pessoa pessoa = new Pessoa();
+				String consulta2 = "SELECT * FROM whereverigo.pessoa WHERE pesosa.id_usuario = ?";
+				stmt = connection.prepareStatement(consulta2);
+				stmt.setInt(1, usuario.getId());
+				resultSet = stmt.executeQuery();
+				
+				while (resultSet.next()){
+					//pessoa.setNome(resultSet);
+					
+					return pessoa;
+				
+				}
 			}
 			
 		}catch (SQLException ex){
@@ -54,6 +64,67 @@ public class UsuarioDao {
 			ConnectionFactory.closeConnection(connection, stmt, resultSet);
 		}
 		return null;
+	}
+	
+	public boolean existeUsuario(String email){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection connection = ConnectionFactory.getConnection();
+		java.sql.PreparedStatement stmt = null;
+		ResultSet resultSet = null;
+		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ?";
+		try{	
+			stmt = connection.prepareStatement(consulta);
+			stmt.setString(1, email);
+			resultSet = stmt.executeQuery();
+			
+			
+			if (resultSet.next()){
+				return true;
+			}
+			
+		}catch (SQLException ex){
+			return false;
+		}
+		finally{
+			ConnectionFactory.closeConnection(connection, stmt, resultSet);
+		}
+		return false;
+	}
+	
+	public boolean verificarUsuario(String email,String senha){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection connection = ConnectionFactory.getConnection();
+		java.sql.PreparedStatement stmt = null;
+		ResultSet resultSet = null;
+		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ? and usuario.senha = ?";
+		try{	
+			stmt = connection.prepareStatement(consulta);
+			stmt.setString(1, email);
+			stmt.setString(2, senha);
+			resultSet = stmt.executeQuery();
+			
+			
+			if (resultSet.next()){
+				return true;
+			}
+			
+		}catch (SQLException ex){
+			return false;
+		}
+		finally{
+			ConnectionFactory.closeConnection(connection, stmt, resultSet);
+		}
+		return false;
 	}
 
    public int addUsuario(Pessoa pessoa){

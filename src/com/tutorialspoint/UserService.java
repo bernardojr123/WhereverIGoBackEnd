@@ -46,26 +46,6 @@ public class UserService {
 	}
    }
 
-
-   @GET
-   @Path("/users")
-   @Produces(MediaType.APPLICATION_XML)
-   public List<Usuario> getUsers(){
-	   ArrayList<Usuario> usus = new ArrayList<>();
-	   Usuario usu = new Usuario(1,"bernardo","aaa");
-	   usus.add(usu);
-	   return usus;
-   }
-
-   @GET
-   @Path("/users/{usuarioemail}")
-   @Produces(MediaType.APPLICATION_XML)
-   public Usuario getUser(@PathParam("usuarioemail") String email){
-	  Usuario usuario = usuarioDao.getUsuario(email);
-	  //Usuario usu = new Usuario(1,email,"ddd");
-      return usuario;
-   }
-
    @POST
    @Path("/users")
    @Produces(MediaType.APPLICATION_XML)
@@ -96,6 +76,51 @@ public class UserService {
 	   }
 	   return FAILURE_RESULT;
    }
+   
+   @POST
+   @Path("/existeuser")
+   @Produces(MediaType.APPLICATION_XML)
+   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   public String existeUser(
+		   @FormParam("email") String email,
+		   @Context HttpServletResponse servletResponse) throws IOException{
+	   boolean b = usuarioDao.existeUsuario(email);
+	   if(b == true){
+		   return SUCCESS_RESULT;
+	   }
+	   return FAILURE_RESULT;
+   }
+   
+   @POST
+   @Path("/getuser")
+   @Produces(MediaType.APPLICATION_XML)
+   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   public Pessoa getUser(
+		   @FormParam("email") String email,
+		   @Context HttpServletResponse servletResponse) throws IOException{
+	   boolean b = usuarioDao.existeUsuario(email);
+	   if(b == true){
+		   Pessoa pessoa = usuarioDao.getUsuario(email);
+		   return pessoa;
+	   }
+	   return null;
+   }
+   
+   @POST
+   @Path("/verificarlogin")
+   @Produces(MediaType.APPLICATION_XML)
+   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+   public String verificarLogin(
+		   @FormParam("email") String email,
+		   @FormParam("senha") String senha,
+		   @Context HttpServletResponse servletResponse) throws IOException{
+	   boolean b = usuarioDao.verificarUsuario(email, senha);
+	   if(b == true){
+		   return SUCCESS_RESULT;
+	   }
+	   return FAILURE_RESULT;
+   }
+   
    /*
    @PUT
    @Path("/users")
