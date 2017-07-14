@@ -12,7 +12,8 @@ import javax.ws.rs.core.MediaType;
 public class WebServiceTester  {
 
    private Client client;
-   private String REST_SERVICE_URL = "http://localhost:8080/WhereverIgo/rest/UserService/users";
+   private String REST_SERVICE_URL_ADD = "http://localhost:8080/WhereverIgo/rest/UserService/users";
+   private String REST_SERVICE_URL_VERIFICAR = "http://localhost:8080/WhereverIgo/rest/UserService/verificarlogin";
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String PASS = "pass";
    private static final String FAIL = "fail";
@@ -28,9 +29,12 @@ public class WebServiceTester  {
       //test get all users Web Service Method
 
       //test add user Web Service Method
-      tester.testAddUser();
-      tester.testVerificarLogin();
-
+      //tester.testAddUser();
+      try {
+    	  tester.testGetPessoa();
+      }catch(Exception x){ 
+    	  x.printStackTrace();
+      }
    }
 
 
@@ -48,7 +52,7 @@ public class WebServiceTester  {
       form.param("sexo", "Masculino");
 
       String callResult = client
-         .target(REST_SERVICE_URL)
+         .target(REST_SERVICE_URL_ADD)
          .request(MediaType.APPLICATION_XML)
          .post(Entity.entity(form,
             MediaType.APPLICATION_FORM_URLENCODED_TYPE),
@@ -62,19 +66,12 @@ public class WebServiceTester  {
       System.out.println("Test case name: testAddUser, Result: " + result );
    }
    
-   private void testEmailValido(){
+   private void testGetPessoa(){
 	      Form form = new Form();
 	      form.param("email", "5");
-	      form.param("senha", "naresh");
-	      form.param("nome", "clerk");
-	      java.util.Date date = new java.util.Date();
-		  Date data = new java.sql.Date(date.getTime());
-		  SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
-	      form.param("dataNascimento", df.format(data));
-	      form.param("sexo", "Masculino");
 
 	      String callResult = client
-	         .target(REST_SERVICE_URL)
+	         .target("http://localhost:8080/WhereverIgo/rest/UserService/existeuser")
 	         .request(MediaType.APPLICATION_XML)
 	         .post(Entity.entity(form,
 	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),
@@ -85,34 +82,8 @@ public class WebServiceTester  {
 	         result = FAIL;
 	      }
 
-	      System.out.println("Test case name: testAddUser, Result: " + result );
-   }
-   
-   private void testGetUser(){
-	      Form form = new Form();
-	      form.param("email", "5");
-	      form.param("senha", "naresh");
-	      form.param("nome", "clerk");
-	      java.util.Date date = new java.util.Date();
-		  Date data = new java.sql.Date(date.getTime());
-		  SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
-	      form.param("dataNascimento", df.format(data));
-	      form.param("sexo", "Masculino");
-
-	      String callResult = client
-	         .target(REST_SERVICE_URL)
-	         .request(MediaType.APPLICATION_XML)
-	         .post(Entity.entity(form,
-	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),
-	            String.class);
-	   
-	      String result = PASS;
-	      if(!SUCCESS_RESULT.equals(callResult)){
-	         result = FAIL;
-	      }
-
-	      System.out.println("Test case name: testAddUser, Result: " + result );
-   }
+	      System.out.println("Test case name: VerificarLogin, Result: " + result );
+}
    
    private void testVerificarLogin(){
 	      Form form = new Form();
@@ -120,7 +91,7 @@ public class WebServiceTester  {
 	      form.param("senha", "naresh");
 
 	      String callResult = client
-	         .target("http://localhost:8080/WhereverIgo/rest/UserService/verificarlogin")
+	         .target(REST_SERVICE_URL_VERIFICAR)
 	         .request(MediaType.APPLICATION_XML)
 	         .post(Entity.entity(form,
 	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),
