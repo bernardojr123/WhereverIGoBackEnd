@@ -29,12 +29,12 @@ public class WebServiceTester  {
       //test get all users Web Service Method
 
       //test add user Web Service Method
-      //tester.testAddUser();
-      try {
+      tester.testAddUser();
+      /*try {
     	  tester.testGetPessoa();
       }catch(Exception x){ 
     	  x.printStackTrace();
-      }
+      }*/
    }
 
 
