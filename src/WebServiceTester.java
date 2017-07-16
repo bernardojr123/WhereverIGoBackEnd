@@ -9,6 +9,8 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
+import dominio.Pessoa;
+
 public class WebServiceTester  {
 
    private Client client;
@@ -30,6 +32,8 @@ public class WebServiceTester  {
 
       //test add user Web Service Method
       tester.testAddUser();
+      tester.testExisteUser();
+      tester.testGetPessoa();
       /*try {
     	  tester.testGetPessoa();
       }catch(Exception x){ 
@@ -52,7 +56,7 @@ public class WebServiceTester  {
       form.param("sexo", "Masculino");
 
       String callResult = client
-         .target(REST_SERVICE_URL_ADD)
+         .target("http://localhost:8080/WhereverIgo/rest/UserService/users")
          .request(MediaType.APPLICATION_XML)
          .post(Entity.entity(form,
             MediaType.APPLICATION_FORM_URLENCODED_TYPE),
@@ -66,12 +70,13 @@ public class WebServiceTester  {
       System.out.println("Test case name: testAddUser, Result: " + result );
    }
    
-   private void testGetPessoa(){
+   private void testExisteUser(){
 	      Form form = new Form();
 	      form.param("email", "5");
+	      
 
 	      String callResult = client
-	         .target("http://localhost:8080/WhereverIgo/rest/UserService/existeuser")
+	         .target("http://localhost:8080/WhereverIgo/rest/UserService/existeusers")
 	         .request(MediaType.APPLICATION_XML)
 	         .post(Entity.entity(form,
 	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),
@@ -82,28 +87,27 @@ public class WebServiceTester  {
 	         result = FAIL;
 	      }
 
-	      System.out.println("Test case name: VerificarLogin, Result: " + result );
-}
+	      System.out.println("Test case name: existeusers, Result: " + result );
+	   }
    
-   private void testVerificarLogin(){
+   private void testGetPessoa(){
 	      Form form = new Form();
 	      form.param("email", "5");
 	      form.param("senha", "naresh");
 
-	      String callResult = client
-	         .target(REST_SERVICE_URL_VERIFICAR)
+	      Pessoa callResult = client
+	         .target("http://localhost:8080/WhereverIgo/rest/UserService/getuser")
 	         .request(MediaType.APPLICATION_XML)
 	         .post(Entity.entity(form,
 	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),
-	            String.class);
+	            Pessoa.class);
 	   
-	      String result = PASS;
-	      if(!SUCCESS_RESULT.equals(callResult)){
-	         result = FAIL;
+	      if (callResult != null) {
+	    	  System.out.println("Test case name: GetPessoa, Result: " + callResult.getNome() );	    	  
+	      }else {
+	    	  System.out.println("Pessoa vazia");
 	      }
 
-	      System.out.println("Test case name: VerificarLogin, Result: " + result );
+	      
    }
-	
-
 }

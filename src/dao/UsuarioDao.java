@@ -27,7 +27,7 @@ public class UsuarioDao {
 		}
 	}
 	
-	public Pessoa getPessoa(String email){
+	public Pessoa getPessoa(String email, String senha){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -37,10 +37,11 @@ public class UsuarioDao {
 		Connection connection = ConnectionFactory.getConnection();
 		java.sql.PreparedStatement stmt = null;
 		ResultSet resultSet = null;
-		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ?";
+		String consulta = "SELECT * FROM whereverigo.usuario WHERE usuario.email = ? and usuario.senha = ?";
 		try{	
 			stmt = connection.prepareStatement(consulta);
 			stmt.setString(1, email);
+			stmt.setString(2, senha);
 			resultSet = stmt.executeQuery();
 			
 			

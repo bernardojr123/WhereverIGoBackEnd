@@ -78,10 +78,10 @@ public class UserService {
    }
    
    @POST
-   @Path("/existeuser")
+   @Path("/existeusers")
    @Produces(MediaType.APPLICATION_XML)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public String existeUser(
+   public String createUsers(
 		   @FormParam("email") String email,
 		   @Context HttpServletResponse servletResponse) throws IOException{
 	   boolean b = usuarioDao.existeUsuario(email);
@@ -97,28 +97,12 @@ public class UserService {
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public Pessoa getUser(
 		   @FormParam("email") String email,
-		   @Context HttpServletResponse servletResponse) throws IOException{
-	   boolean b = usuarioDao.existeUsuario(email);
-	   if(b == true){
-		   Pessoa pessoa = usuarioDao.getPessoa(email);
-		   return pessoa;
-	   }
-	   return null;
-   }
-   
-   @POST
-   @Path("/verificarlogin")
-   @Produces(MediaType.APPLICATION_XML)
-   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public String verificarLogin(
-		   @FormParam("email") String email,
 		   @FormParam("senha") String senha,
 		   @Context HttpServletResponse servletResponse) throws IOException{
-	   boolean b = usuarioDao.verificarUsuario(email, senha);
-	   if(b == true){
-		   return SUCCESS_RESULT;
-	   }
-	   return FAILURE_RESULT;
+	   Pessoa result = usuarioDao.getPessoa(email,senha);
+	   
+	   return result;
+	   
    }
    
    /*
