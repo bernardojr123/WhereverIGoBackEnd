@@ -13,13 +13,14 @@ public class Pessoa implements Serializable{
 	private int id;	
 	private Usuario usuario;
 	private String nome;
+	private String strdataNascimento;
 	private Date dataNascimento;
 	private String sexo;
 
-	public Pessoa(Usuario usuario, String nome, Date dataNascimento, String sexo) {
+	public Pessoa(Usuario usuario, String nome, String dataNascimento, String sexo) {
 		this.usuario = usuario;
 		this.nome = nome;
-		this.dataNascimento = dataNascimento;
+		this.strdataNascimento = dataNascimento;
 		this.sexo = sexo;
 	}
 
@@ -52,10 +53,18 @@ public class Pessoa implements Serializable{
 	    this.nome = nome;
 	}
 
+	public String getStrDataNascimento() {
+	    return strdataNascimento;
+	}
+
+	@XmlElement
+	public void setStrDataNascimento(String dataNascimento) {
+	    this.strdataNascimento = dataNascimento;
+	}
+	
 	public Date getDataNascimento() {
 	    return dataNascimento;
 	}
-
 	@XmlElement
 	public void setDataNascimento(Date dataNascimento) {
 	    this.dataNascimento = dataNascimento;

@@ -16,7 +16,7 @@ public class InicializarBanco {
 	static final String USER = "root";
 	static final String PASS = "1234";
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		try {
 			InicializarBanco inicializar = new InicializarBanco();
 			UsuarioDao dao = new UsuarioDao();
@@ -36,7 +36,7 @@ public class InicializarBanco {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 	
 	public InicializarBanco() throws SQLException{
 		inicializarBanco();

@@ -14,8 +14,6 @@ import dominio.Pessoa;
 public class WebServiceTester  {
 
    private Client client;
-   private String REST_SERVICE_URL_ADD = "http://localhost:8080/WhereverIgo/rest/UserService/users";
-   private String REST_SERVICE_URL_VERIFICAR = "http://localhost:8080/WhereverIgo/rest/UserService/verificarlogin";
    private static final String SUCCESS_RESULT="<result>success</result>";
    private static final String PASS = "pass";
    private static final String FAIL = "fail";
@@ -46,8 +44,8 @@ public class WebServiceTester  {
    //Test: Check if result is success XML.
    private void testAddUser(){
       Form form = new Form();
-      form.param("email", "5");
-      form.param("senha", "naresh");
+      form.param("email", "ber@nar.do");
+      form.param("senha", "bernardo");
       form.param("nome", "clerk");
       java.util.Date date = new java.util.Date();
 	  Date data = new java.sql.Date(date.getTime());
@@ -72,7 +70,7 @@ public class WebServiceTester  {
    
    private void testExisteUser(){
 	      Form form = new Form();
-	      form.param("email", "5");
+	      form.param("email", "ber@nar.do");
 	      
 
 	      String callResult = client
@@ -92,8 +90,8 @@ public class WebServiceTester  {
    
    private void testGetPessoa(){
 	      Form form = new Form();
-	      form.param("email", "5");
-	      form.param("senha", "naresh");
+	      form.param("email", "ber@nar.do");
+	      form.param("senha", "bernardo");
 
 	      Pessoa callResult = client
 	         .target("http://localhost:8080/WhereverIgo/rest/UserService/getuser")
@@ -103,7 +101,12 @@ public class WebServiceTester  {
 	            Pessoa.class);
 	   
 	      if (callResult != null) {
-	    	  System.out.println("Test case name: GetPessoa, Result: " + callResult.getNome() );	    	  
+	    	  System.out.println("Test case name: GetPessoa, Result: " + callResult.getNome() );
+	    	  try {
+	    		  System.out.println("str pessoa = " + callResult.getStrDataNascimento());
+	    	  }catch(Exception e) {
+	    		  System.out.println(e);
+	    	  }
 	      }else {
 	    	  System.out.println("Pessoa vazia");
 	      }

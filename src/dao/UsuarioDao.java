@@ -11,12 +11,14 @@ import dominio.Pessoa;
 import dominio.Usuario;
 
 public class UsuarioDao {
-		
-	/*public static void main(String[] args) {
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
+	public static void main(String[] args) {
 		UsuarioDao usu = new UsuarioDao();
-		boolean pessoa = usu.verificarUsuario("bernardodems","1234568");
+		Pessoa pessoa = usu.getPessoa("ber@nar.do","bernardo");
 
-	}*/
+	}
 	
 	public UsuarioDao() {
 		try {
@@ -62,7 +64,9 @@ public class UsuarioDao {
 					pessoa.setNome(resultSet2.getString("nome"));
 					pessoa.setSexo(resultSet2.getString("sexo"));
 					pessoa.setUsuario(usuario);
-					pessoa.setDataNascimento(resultSet2.getDate("dataNascimento"));
+					Date data = resultSet2.getDate("dataNascimento");
+					String strData = sdf.format(data);
+					pessoa.setStrDataNascimento(strData);;
 					
 					return pessoa;
 				

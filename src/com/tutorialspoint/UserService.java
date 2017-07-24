@@ -81,7 +81,7 @@ public class UserService {
    @Path("/existeusers")
    @Produces(MediaType.APPLICATION_XML)
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public String createUsers(
+   public String existeuser(
 		   @FormParam("email") String email,
 		   @Context HttpServletResponse servletResponse) throws IOException{
 	   boolean b = usuarioDao.existeUsuario(email);
