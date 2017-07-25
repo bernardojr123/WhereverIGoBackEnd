@@ -19,7 +19,7 @@ public class InicializarBanco {
 	public static void main(String[] args) {
 		try {
 			InicializarBanco inicializar = new InicializarBanco();
-			UsuarioDao dao = new UsuarioDao();
+			/*UsuarioDao dao = new UsuarioDao();
 			Usuario usu = new Usuario();
 			usu.setEmail("bernardo5");
 			usu.setSenha("aaaab");
@@ -31,7 +31,7 @@ public class InicializarBanco {
 			Date data = new java.sql.Date(date.getTime());
 			pessoa.setDataNascimento(data);
 			dao.addUsuario(pessoa);
-			pessoa.getClass();
+			pessoa.getClass();*/
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
