@@ -1,4 +1,4 @@
-package dominio;
+package model.dominio;
 
 import java.io.Serializable;
 import java.util.Date;

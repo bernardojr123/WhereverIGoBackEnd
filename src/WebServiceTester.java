@@ -9,7 +9,9 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-import dominio.Pessoa;
+import model.dominio.Pessoa;
+
+
 
 public class WebServiceTester  {
 
@@ -50,11 +52,11 @@ public class WebServiceTester  {
       java.util.Date date = new java.util.Date();
 	  Date data = new java.sql.Date(date.getTime());
 	  SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy" );
-      form.param("dataNascimento", df.format(data));
+      form.param("dataNascimento", "14/09/1994");
       form.param("sexo", "Masculino");
 
       String callResult = client
-         .target("http://localhost:8080/WhereverIgo/rest/UserService/users")
+         .target("http://192.168.25.55:8080/Wherever/rest/UsuarioService/createuser")
          .request(MediaType.APPLICATION_XML)
          .post(Entity.entity(form,
             MediaType.APPLICATION_FORM_URLENCODED_TYPE),
@@ -65,7 +67,7 @@ public class WebServiceTester  {
          result = FAIL;
       }
 
-      System.out.println("Test case name: testAddUser, Result: " + result );
+      System.out.println("Test case name: testAddUser, Result: " + callResult );
    }
    
    private void testExisteUser(){
@@ -74,7 +76,7 @@ public class WebServiceTester  {
 	      
 
 	      String callResult = client
-	         .target("http://localhost:8080/WhereverIgo/rest/UserService/existeusers")
+	         .target("http://localhost:8080/Wherever/rest/UsuarioService/existeusers")
 	         .request(MediaType.APPLICATION_XML)
 	         .post(Entity.entity(form,
 	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),
@@ -94,7 +96,7 @@ public class WebServiceTester  {
 	      form.param("senha", "bernardo");
 
 	      Pessoa callResult = client
-	         .target("http://localhost:8080/WhereverIgo/rest/UserService/getuser")
+	         .target("http://localhost:8080/Wherever/rest/UsuarioService/getuser")
 	         .request(MediaType.APPLICATION_XML)
 	         .post(Entity.entity(form,
 	            MediaType.APPLICATION_FORM_URLENCODED_TYPE),

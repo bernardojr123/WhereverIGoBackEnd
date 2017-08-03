@@ -1,22 +1,45 @@
-package dao;
+package model.persistencia;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import connection.*;
-import dominio.Pessoa;
-import dominio.Usuario;
+import control.ConnectionFactory;
+import control.InicializarBanco;
+import model.dominio.Pessoa;
+import model.dominio.Usuario;
+
+
 
 public class UsuarioDao {
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public static void main(String[] args) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		UsuarioDao usu = new UsuarioDao();
-		Pessoa pessoa = usu.getPessoa("ber@nar.do","bernardo");
+		Pessoa pessoa = new Pessoa();
+		Usuario usuario = new Usuario();
+		usuario.setEmail("bda@nbr.do");
+		usuario.setSenha("bernardo");
+		pessoa.setUsuario(usuario);
+		String dataa = "14/09/1994";
+		pessoa.setNome("bernardo");
+		java.util.Date data;
+		try {
+			data = sdf.parse(dataa);
+			pessoa.setDataNascimento(data);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pessoa.setSexo("Masculino");
+		UsuarioDao usua = new UsuarioDao();
+		int i = usua.addUsuario(pessoa);
+		System.out.println("ainda n sei");
 
 	}
 	
@@ -179,35 +202,38 @@ public class UsuarioDao {
    public int addUsuario(Pessoa pessoa){
 	   Connection connection = ConnectionFactory.getConnection();
 	   java.sql.PreparedStatement stmt = null;
-		
-	   try{
-		   Usuario usuario = pessoa.getUsuario();
-		   stmt = connection.prepareStatement("INSERT INTO whereverigo.usuario (email, senha)VALUES(?,?)");
-		   stmt.setString(1, usuario.getEmail());
-		   stmt.setString(2, usuario.getSenha());
-			
-		   stmt.executeUpdate();
-		   
-		   stmt = connection.prepareStatement("INSERT INTO whereverigo.pessoa (id_usuario, nome, dataNascimento, sexo) VALUES (?,?,?,?);");
-		   Usuario p = getUsuario(usuario.getEmail());
-		   int id = p.getId();
-		   stmt.setInt(1, id);
-		   stmt.setString(2, pessoa.getNome());
-		   java.sql.Date dataSql = new java.sql.Date(pessoa.getDataNascimento().getTime());
-		   stmt.setDate(3, dataSql );
-		   stmt.setString(4, pessoa.getSexo());
-		   
-		   stmt.executeUpdate();
-		   
-		   
-			
-	   }catch (SQLException ex){
-		   return 0;
-			
-	   }finally{
-		   ConnectionFactory.closeConnection(connection, stmt);
-	   }
+	   if(!verificarUsuario(pessoa.getUsuario().getEmail(), pessoa.getUsuario().getSenha())) {
+		   try{
+			   Usuario usuario = pessoa.getUsuario();
+			   
+			   stmt = connection.prepareStatement("INSERT INTO whereverigo.usuario (email, senha)VALUES(?,?)");
+			   stmt.setString(1, usuario.getEmail());
+			   stmt.setString(2, usuario.getSenha());
+			   stmt.executeUpdate();
+			   
+			   java.sql.PreparedStatement stmt2 = null;
+			   stmt2 = connection.prepareStatement("INSERT INTO whereverigo.pessoa (id_usuario, nome, dataNascimento, sexo) VALUES (?,?,?,?);");
+			   Usuario p = getUsuario(usuario.getEmail());
+			   int id = p.getId();
+			   stmt2.setInt(1, id);
+			   stmt2.setString(2, pessoa.getNome());
+			   java.sql.Date dataSql = new java.sql.Date(pessoa.getDataNascimento().getTime());
+			   String strDate = sdf.format(dataSql);
+			   stmt2.setDate(3, dataSql );
+			   stmt2.setString(4, pessoa.getSexo());
+			   stmt2.executeUpdate();
+			   
+			   
+				
+		   }catch (SQLException ex){
+			   return 0;
+				
+		   }finally{
+			   ConnectionFactory.closeConnection(connection, stmt);
+		   }
 	   return 1;
+	   }
+	   return 0;
    }
 
    public int atualizarUsuario(Usuario usuario){

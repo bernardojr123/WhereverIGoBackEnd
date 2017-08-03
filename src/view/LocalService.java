@@ -1,4 +1,4 @@
-package com.tutorialspoint;
+package view;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import dao.LocalDao;
-import dominio.Local;
+import model.dominio.Local;
+import model.persistencia.LocalDao;
+
+
+
 
 @Path("/LocalService")
 public class LocalService {

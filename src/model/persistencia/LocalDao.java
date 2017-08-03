@@ -1,4 +1,4 @@
-package dao;
+package model.persistencia;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import connection.ConnectionFactory;
-import dominio.Local;
-import dominio.Pessoa;
-import dominio.Usuario;
+import control.ConnectionFactory;
+import model.dominio.Local;
+
+
 
 public class LocalDao {
 	

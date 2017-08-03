@@ -1,11 +1,9 @@
-package connection;
+package control;
 
 import java.sql.*;
 import java.util.Date;
 
-import dao.UsuarioDao;
-import dominio.Pessoa;
-import dominio.Usuario;
+
 
 public class InicializarBanco {
 	
