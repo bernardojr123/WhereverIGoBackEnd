@@ -42,7 +42,7 @@ public class UsuarioService {
 	
 	@POST
 	@Path("/createuser")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public String createUser(
 			@FormParam("email") String email,
@@ -70,19 +70,19 @@ public class UsuarioService {
 			}
 			int result = usuarioDao.addUsuario(pessoa);
 			if(result == 1){
-				return SUCCESS_RESULT;
+				return "sucess";
 			}else {
 				
 			}
 		
 		}
-		return FAILURE_RESULT;
+		return "failure";
 	}
 	
 	
 	@POST
 	@Path("/existeusers")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public String existeuser(
 			@FormParam("email") String email,
@@ -97,7 +97,7 @@ public class UsuarioService {
 	
 	@POST
 	@Path("/getuser")
-	@Produces(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Pessoa getUser(
 			@FormParam("email") String email,
