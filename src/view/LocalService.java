@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import control.LocalControl;
 import model.dominio.Local;
 import model.persistencia.LocalDao;
 
@@ -23,6 +24,7 @@ import model.persistencia.LocalDao;
 @Path("/LocalService")
 public class LocalService {
 	LocalDao dao = new LocalDao();
+	LocalControl localControl = new LocalControl();
 	
 	@POST
 	@Path("/locais")
@@ -32,13 +34,42 @@ public class LocalService {
 	}
 	
 	@POST
-	@Path("/aindansei")
+	@Path("/locaisportag")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void mandaLugares(
-		@FormParam("lugar") Local local,
+	public ArrayList<Local> getLugaresPorTag(
+		@FormParam("tags") String tags,
 		@Context HttpServletResponse servletResponse) throws IOException{
-		
+		if (tags.length() > 1) {
+			return localControl.getLocaisPorTags(tags);
+		}
+		return null;
 	}
+	
+	@POST
+	@Path("/locaisultimapesquisa")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public ArrayList<Local> getUltimosLugares(
+		@FormParam("id") int id,
+		@Context HttpServletResponse servletResponse) throws IOException{
+		return localControl.getUltimosLugares(id);
+	}	
+	
+	@POST
+	@Path("/locaiscomnota")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public String sendLugaresComNotas(
+		@FormParam("id") int id,
+		@FormParam("lugares") String lugares,
+		@FormParam("notas") String notas,
+		@FormParam("todoslocais") String todosLocais,
+		@Context HttpServletResponse servletResponse) throws IOException{
+		if(localControl.sendLugaresComNotas(id, lugares, notas,todosLocais)) {
+			return "sucess";
+		}
+		return "failure";
+	}	
 	
 }
