@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import control.ConnectionFactory;
 import control.InicializarBanco;
@@ -19,7 +20,7 @@ public class UsuarioDao {
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public static void main(String[] args) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+/*		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		UsuarioDao usu = new UsuarioDao();
 		Pessoa pessoa = new Pessoa();
 		Usuario usuario = new Usuario();
@@ -39,8 +40,12 @@ public class UsuarioDao {
 		pessoa.setSexo("Masculino");
 		UsuarioDao usua = new UsuarioDao();
 		int i = usua.addUsuario(pessoa);
-		System.out.println("ainda n sei");
-
+		System.out.println("ainda n sei");*/
+		
+		UsuarioDao usu = new UsuarioDao();
+		ArrayList<ArrayList<Integer>> lista = usu.getNotaOutrosUsuarios(1);
+		System.out.println(lista);
+		
 	}
 	
 	public UsuarioDao() {
@@ -103,6 +108,45 @@ public class UsuarioDao {
 			ConnectionFactory.closeConnection(connection, stmt, resultSet);
 		}
 		return null;
+	}
+	
+	public ArrayList<ArrayList<Integer>> getNotaOutrosUsuarios(int id){
+		ArrayList<ArrayList<Integer>> resposta = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> usuarioId = new ArrayList<Integer>();
+		ArrayList<Integer> avaliacaoIdLugar = new ArrayList<Integer>();
+		ArrayList<Integer> avaliacaoNota = new ArrayList<Integer>();
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection connection = ConnectionFactory.getConnection();
+		java.sql.PreparedStatement stmt = null;
+		ResultSet resultSet = null;
+		String consulta = "select usuario.id, avaliacao.idlugar, avaliacao.nota from whereverigo.usuario right join whereverigo.avaliacao on usuario.id = avaliacao.id_usuario where id_usuario != ? ";
+		try{	
+			stmt = connection.prepareStatement(consulta);
+			stmt.setInt(1, id);
+			resultSet = stmt.executeQuery();
+			while (resultSet.next()){
+				usuarioId.add(resultSet.getInt("id"));
+				avaliacaoIdLugar.add(resultSet.getInt("idlugar"));
+				avaliacaoNota.add(resultSet.getInt("nota"));
+			}
+			resposta.add(usuarioId);
+			resposta.add(avaliacaoIdLugar);
+			resposta.add(avaliacaoNota);
+			return resposta;
+			
+		}catch (SQLException ex){
+			return null;
+		}
+		finally{
+			ConnectionFactory.closeConnection(connection, stmt, resultSet);
+		}
+		
 	}
 	
 	public Usuario getUsuario(String email){
