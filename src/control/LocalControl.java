@@ -35,7 +35,7 @@ public class LocalControl {
 		
 		SlopeOne slopeOne = new SlopeOne();
 		String query = slopeOne.getObjetos(id, nomeLugares, arrayNotas, arrayTags);
-		dao.insertAvaliacao(query);
+		//dao.insertAvaliacao(query);
 		return true;
 	}
 }

@@ -18,7 +18,7 @@ public class LocalDao {
 	
 	public static void main(String[] args) {
 		LocalDao local = new LocalDao();
-		
+		/*
 	    String[] tagsDoUsuario = new String[9];  
 	    tagsDoUsuario[0] = "praia";  
 	    tagsDoUsuario[1] = "gastronomia";
@@ -26,10 +26,13 @@ public class LocalDao {
 		System.out.println(lista.size());
 		for(int i=0; i<lista.size();i++) {
 			System.out.println(lista.get(i).getCidade());
-		System.out.println(local.getId("fortaleza"));
+		System.out.println(local.getId("fortaleza"));*/
+		
+		ArrayList<Local> resposta = local.getUltimosLugares(1);
+		System.out.println("oi");
+		
 		}
 		
-	}
 	
 	public ArrayList<Local> getLocais() {
 		ArrayList<Local> locais = new ArrayList<>();
@@ -60,6 +63,36 @@ public class LocalDao {
 			return locais;
 		}catch (SQLException ex){
 			return null;
+		}
+		finally{
+			ConnectionFactory.closeConnection(connection, stmt, resultSet);
+		}
+	}
+	
+	public boolean insetAvaliacao(Integer id_usuario, Integer id_lugar, String nota) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection connection = ConnectionFactory.getConnection();
+		java.sql.PreparedStatement stmt = null;
+		ResultSet resultSet = null;
+		java.util.Date date = new java.util.Date();
+		java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+		String query = "insert into whereverigo.avaliacao (id_usuario,idlugar,nota,dataAvaliacao) values (?, ?, ?, ?);";
+		try{	
+			stmt = connection.prepareStatement(query);
+			stmt.setInt(1, id_usuario);
+			stmt.setInt(2, id_lugar);
+			int iNota = Integer.parseInt(nota);
+			stmt.setInt(3, iNota);
+			stmt.setDate(4, sqlDate);
+			stmt.executeUpdate();
+			return true;
+		}catch (SQLException ex){
+			return false;
 		}
 		finally{
 			ConnectionFactory.closeConnection(connection, stmt, resultSet);
@@ -125,10 +158,11 @@ public class LocalDao {
 		Connection connection = ConnectionFactory.getConnection();
 		java.sql.PreparedStatement stmt = null;
 		ResultSet resultSet = null;
-		String consulta = "SELECT distinct(cidade.id),nome, descricao, estado_pais,foto FROM whereverigo.avaliacao inner join whereverigo.cidade on avaliacao.idlugar=cidade.id where id_usuario = ? order by dataAvaliacao desc;";
+		String consulta = "SELECT distinct(cidade.id),nome, descricao, estado_pais,foto FROM whereverigo.avaliacao inner join whereverigo.cidade on avaliacao.idlugar=cidade.id where id_usuario = ? and  dataAvaliacao in (select max(dataAvaliacao) from whereverigo.avaliacao where avaliacao.id_usuario = ?);";
 		try{	
 			stmt = connection.prepareStatement(consulta);
 			stmt.setInt(1, id);
+			stmt.setInt(2, id);
 			resultSet = stmt.executeQuery();
 			
 			
@@ -164,7 +198,7 @@ public class LocalDao {
 		String consulta = query;
 		try{	
 			stmt = connection.prepareStatement(consulta);
-			resultSet = stmt.executeQuery();
+			stmt.executeUpdate();
 			
 			return true;
 		}catch (SQLException ex){

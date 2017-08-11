@@ -216,20 +216,31 @@ public class SlopeOne {
  
  public String resultadoRecomendacao(ArrayList lugarNota, int idUser) {
 	 String query = "insert into whereverigo.avaliacao (id_usuario,idlugar,nota,dataAvaliacao) values ";
-	for (int a=0; a<lugarNota.size();a++) {
+	 ArrayList<Integer> id_Usuario = new ArrayList<>();
+	 ArrayList<Integer> id_Lugar = new ArrayList<>();
+	 ArrayList<String> nota = new ArrayList<>();
+	 
+	 for (int a=0; a<lugarNota.size();a++) {
 		if (a%2==0) {
 			int idLugar = localDao.getId( (String) lugarNota.get(a));
 			query+= " ("+ idUser + ", "+ idLugar;
+			id_Lugar.add(idLugar);
+			id_Usuario.add(idUser);
 			
 			
 		}else {
 			if (a+1!=lugarNota.size()) {
 				query += ", "+ lugarNota.get(a) + ", "+ "'2017-08-11'), ";
+				nota.add(lugarNota.get(a).toString());
 			}else {
 				query += ", "+ lugarNota.get(a) + ", "+ "'2017-08-11'); ";
+				nota.add(lugarNota.get(a).toString());
 			}	
 		}
-		
+	}
+	LocalDao dao = new LocalDao();
+	for (int l=0; l<id_Usuario.size();l++) {
+		boolean s = localDao.insetAvaliacao(id_Usuario.get(l), id_Lugar.get(l), nota.get(l));
 	}
 	return query;
 	 
