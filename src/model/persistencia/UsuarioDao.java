@@ -43,7 +43,7 @@ public class UsuarioDao {
 		System.out.println("ainda n sei");*/
 		
 		UsuarioDao usu = new UsuarioDao();
-		ArrayList<ArrayList<Integer>> lista = usu.getNotaOutrosUsuarios(1);
+		ArrayList<ArrayList<Integer>> lista = usu.getNotaOutrosUsuarios(2);
 		System.out.println(lista);
 		
 	}
